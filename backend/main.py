@@ -1,8 +1,11 @@
 from fastapi import FastAPI, BackgroundTasks
 import yfinance as yf
 import pandas as pd
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(CORSMiddleware,allow_origins=["http://localhost:5173"])
 
 @app.get("/")
 def root():
@@ -17,6 +20,7 @@ def stock(ticker: str):
         "prices" : df["Close"].tolist(),
         "dates" : df.index.strftime("%Y-%m-%d").tolist()
     }
+
 @app.get("/stock/{ticker}/1m")
 def stock(ticker: str):
     stock = yf.Ticker(ticker)
@@ -26,6 +30,7 @@ def stock(ticker: str):
         "prices" : df["Close"].tolist(),
         "dates" : df.index.strftime("%Y-%m-%d").tolist()
     }
+
 @app.get("/stock/{ticker}/1d")
 def stock(ticker: str):
     stock = yf.Ticker(ticker)

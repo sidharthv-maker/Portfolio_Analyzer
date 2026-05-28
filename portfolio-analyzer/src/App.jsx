@@ -7,7 +7,7 @@ function App() {
   const [chartData, setChartData] = useState([])
   useEffect(()=>{
     if(ticker === '' || period === '') return
-    fetch(`http://localhost:8000/stock/${ticker}/${period}`)
+    fetch(`http://localhost:8000/stock/${ticker}?period=${period}`)
       .then(r=>r.json())
       .then(data=>{
         setResp(data)

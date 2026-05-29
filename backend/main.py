@@ -57,3 +57,15 @@ def get_stocks(tickers: str, period: str = "1y"):
             "price": normalised.tolist()
             }
     return dic
+
+@app.get("/corel")
+def get_corel(tickers: str, period: str = "1y"):
+    lst = tickers.split(",")
+    dic = {}
+    for ticker in lst:
+        df = yf.Ticker(ticker).history(period = period)
+        clos = df["Close"].tolist()
+        dic[ticker] = clos
+    dframe = pd.DataFrame(dic)
+    ans = dframe.corr()
+    return ans.to_dict()

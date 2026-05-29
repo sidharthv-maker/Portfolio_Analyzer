@@ -9,7 +9,16 @@ const COLORS = [
   '#84cc16', '#f97316', '#ec4899', '#10b981', '#3b82f6'
 ]
 
-// Maximum number of stocks that can be compared at once
+function getColor(value) {
+  if (value >= 0) {
+    const intensity = Math.round(255 * (1 - value))
+    return `rgb(175, ${intensity}, ${intensity})`
+  } else {
+    const intensity = Math.round(255 * (1 + value))
+    return `rgb(${intensity}, ${intensity}, 175)`
+  }
+}
+
 const MAX_STOCKS = 20
 
 function SingleStock({ onBack }) {
@@ -126,12 +135,12 @@ function Portfolio({ onBack }) {
   const [period, setPeriod] = useState('')
   const [portfolioData, setPortfolioData] = useState(null)
   const [chartData, setChartData] = useState([])
-  useEffect(()=>{
-    if(lst.length === 0 || period === '') return
+  const [correlationData, setCorrelationData] = useState(null)
+  useEffect(() => {
+    if (lst.length === 0 || period === '') return
     fetch(`http://localhost:8000/multi?tickers=${lst.join(",")}&period=${period}`)
       .then(r => r.json())
-      .then(data=>{
-        console.log(data)
+      .then(data => {
         setPortfolioData(data)
         const tickers = Object.keys(data)
         const dates = data[tickers[0]].date
@@ -146,6 +155,12 @@ function Portfolio({ onBack }) {
       })
   }, [lst, period])
 
+  useEffect(() => {
+    if (lst.length === 0 || period === '') return
+    fetch(`http://localhost:8000/corel?tickers=${lst.join(",")}&period=${period}`)
+      .then(r => r.json())
+      .then(data => { setCorrelationData(data) })
+  }, [lst, period])
   const addTicker = () => {
     const t = ticker.trim()
     if (t === '' || lst.includes(t) || lst.length >= MAX_STOCKS) return
@@ -251,6 +266,31 @@ function Portfolio({ onBack }) {
                 ))}
               </LineChart>
             </ResponsiveContainer>
+          </div>
+        )}
+        {correlationData && (
+          <div style={{ textAlign: 'center', marginTop: '24px' }}>
+            <h3>Corelation Matrix</h3>
+            <table className='heatmap'>
+              <thead className='your_mom'>
+                <tr>
+                  <th></th>
+                  {Object.keys(correlationData).map(t => <th key={t}>{t}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {Object.keys(correlationData).map(row => (
+                  <tr key={row}>
+                    <td>{row}</td>
+                    {Object.keys(correlationData).map(col => (
+                      <td key={col} style={{ backgroundColor: getColor(correlationData[row][col]), color: 'white' }}>
+                        {correlationData[row][col].toFixed(2)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

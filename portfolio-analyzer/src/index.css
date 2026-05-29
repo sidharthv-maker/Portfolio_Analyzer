@@ -178,3 +178,152 @@ body {
     flex-direction: column;
   }
 }
+
+/* ---- Home screen ---- */
+.home-options {
+  display: flex;
+  gap: 16px;
+}
+
+.option-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  padding: 24px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.option-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+  transform: translateY(-2px);
+}
+
+.option-card:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.option-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.option-desc {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ---- Back button ---- */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.back-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+@media (max-width: 600px) {
+  .home-options {
+    flex-direction: column;
+  }
+}
+
+.limit-hint {
+  font-size: 13px;
+  color: #64748b;
+  margin-left: 4px;
+}
+
+/* ---- Add button (portfolio) ---- */
+.add-btn {
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #2563eb;
+  border: 1px solid #2563eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.add-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.add-btn:disabled {
+  background: #cbd5e1;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.add-btn:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* ---- Ticker chips (portfolio) ---- */
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 6px 6px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e3a8a;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+}
+
+.chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  color: #1e40af;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.chip-remove:hover {
+  background: #dbeafe;
+  color: #1e3a8a;
+}

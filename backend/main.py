@@ -12,7 +12,7 @@ def safe(val):
 
 app = FastAPI()
 
-app.add_middleware(CORSMiddleware,allow_origins=["http://localhost:5173"])
+app.add_middleware(CORSMiddleware,allow_origins=["http://localhost:5173"],allow_methods=["*"], allow_headers=["*"])
 
 @app.get("/")
 def root():
@@ -43,3 +43,17 @@ def stock(ticker: str, period:str = "1y"):
         "Sharpe_Ratio":(np.mean(returns) * 252 - 0.04)/volatility,
         "Beta" : beta
     }
+
+@app.get("/multi")
+def get_stocks(tickers: str, period: str = "1y"):
+    lst = tickers.split(",")
+    dic = {}
+    for ticker in lst:
+        df = yf.Ticker(ticker).history(period = period)
+        clos = df["Close"].tolist()
+        normalised = (df["Close"]/df["Close"].iloc[0])*100
+        dic[ticker] = {
+            "date" : df.index.strftime("%Y-%m-%d").tolist(),
+            "price": normalised.tolist()
+            }
+    return dic
